@@ -1,0 +1,29 @@
+FROM php:8.0-cli-alpine AS slacklib-build
+
+ENV XDEBUG_VERSION=3.1.2
+
+# Install packages we want to keep
+RUN apk --no-cache add git zlib-dev curl cyrus-sasl-dev bzip2-dev
+
+# Install dependencies that are only used during installation of other packages. Afterwards it will be cleaned up.
+RUN set -xe \
+    && apk add --no-cache --virtual .build-deps \
+       $PHPIZE_DEPS \
+       coreutils \
+       oniguruma-dev \
+    && docker-php-ext-install -j"$(/usr/bin/nproc)" mbstring opcache bz2 \
+    && pecl install xdebug-$XDEBUG_VERSION \
+    && docker-php-ext-enable mbstring opcache bz2 \
+    && apk del .build-deps
+
+COPY . /var/www
+
+WORKDIR /var/www
+
+# Workaround https://bugs.php.net/bug.php?id=71880
+ENV LOG_STREAM="/tmp/stdout"
+RUN mkfifo $LOG_STREAM && chmod 777 $LOG_STREAM
+
+ENTRYPOINT ["/var/www/docker/entrypoint.sh"]
+
+CMD ["php"]

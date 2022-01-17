@@ -1,14 +1,14 @@
 <?php
 
-use Maknz\Slack\Client;
+use Darkmatus\Slack\Client;
 
-class ClientUnitTest extends PHPUnit_Framework_TestCase
+class ClientUnitTest extends \PHPUnit\Framework\TestCase
 {
     public function testInstantiationWithNoDefaults()
     {
         $client = new Client('http://fake.endpoint');
 
-        $this->assertInstanceOf('Maknz\Slack\Client', $client);
+        $this->assertInstanceOf('Darkmatus\Slack\Client', $client);
 
         $this->assertSame('http://fake.endpoint', $client->getEndpoint());
     }
@@ -19,11 +19,11 @@ class ClientUnitTest extends PHPUnit_Framework_TestCase
             'channel' => '#random',
             'username' => 'Archer',
             'icon' => ':ghost:',
-            'link_names' => true,
-            'unfurl_links' => true,
-            'unfurl_media' => false,
-            'allow_markdown' => false,
-            'markdown_in_attachments' => ['text'],
+            'linkNames' => true,
+            'unfurlLinks' => true,
+            'unfurlMedia' => false,
+            'allowMarkdown' => false,
+            'markdownInAttachments' => ['text'],
         ];
 
         $client = new Client('http://fake.endpoint', $defaults);
@@ -40,9 +40,9 @@ class ClientUnitTest extends PHPUnit_Framework_TestCase
 
         $this->assertFalse($client->getUnfurlMedia());
 
-        $this->assertSame($defaults['allow_markdown'], $client->getAllowMarkdown());
+        $this->assertSame($defaults['allowMarkdown'], $client->getAllowMarkdown());
 
-        $this->assertSame($defaults['markdown_in_attachments'], $client->getMarkdownInAttachments());
+        $this->assertSame($defaults['markdownInAttachments'], $client->getMarkdownInAttachments());
     }
 
     public function testCreateMessage()
@@ -57,7 +57,7 @@ class ClientUnitTest extends PHPUnit_Framework_TestCase
 
         $message = $client->createMessage();
 
-        $this->assertInstanceOf('Maknz\Slack\Message', $message);
+        $this->assertInstanceOf('Darkmatus\Slack\Message', $message);
 
         $this->assertSame($client->getDefaultChannel(), $message->getChannel());
 
@@ -72,7 +72,7 @@ class ClientUnitTest extends PHPUnit_Framework_TestCase
 
         $message = $client->to('@regan');
 
-        $this->assertInstanceOf('Maknz\Slack\Message', $message);
+        $this->assertInstanceOf('Darkmatus\Slack\Message', $message);
 
         $this->assertSame('@regan', $message->getChannel());
     }

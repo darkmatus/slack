@@ -1,0 +1,3 @@
+FROM slacklib-build
+
+COPY . /var/www

@@ -1,0 +1,14 @@
+version: "2.1"
+
+services:
+  php:
+    image: slacklib
+    volumes:
+      - ./:/var/www/
+      - ./docker/php.ini:/usr/local/etc/php/conf.d/php.ini
+      - ./docker/xdebug.test.ini:/usr/local/etc/php/conf.d/xdebug.ini
+    working_dir: /var/www/
+    environment:
+      - LOG_STREAM=php://stdout
+    tty: true
+    stdin_open: true

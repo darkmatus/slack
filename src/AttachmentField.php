@@ -1,6 +1,6 @@
 <?php
 
-namespace Maknz\Slack;
+namespace Darkmatus\Slack;
 
 class AttachmentField
 {
@@ -9,14 +9,14 @@ class AttachmentField
      *
      * @var string
      */
-    protected $title;
+    private string $title = '';
 
     /**
      * The required value of the field.
      *
      * @var string
      */
-    protected $value;
+    private string $value = '';
 
     /**
      * Whether the value is short enough to fit side by side with
@@ -24,12 +24,13 @@ class AttachmentField
      *
      * @var bool
      */
-    protected $short = false;
+    private bool $short = false;
 
     /**
      * Instantiate a new AttachmentField.
      *
      * @param array $attributes
+     *
      * @return void
      */
     public function __construct(array $attributes)
@@ -52,7 +53,7 @@ class AttachmentField
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -61,9 +62,10 @@ class AttachmentField
      * Set the title of the field.
      *
      * @param string $title
+     *
      * @return $this
      */
-    public function setTitle($title)
+    public function setTitle(string $title): AttachmentField
     {
         $this->title = $title;
 
@@ -75,7 +77,7 @@ class AttachmentField
      *
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
@@ -84,9 +86,10 @@ class AttachmentField
      * Set the value of the field.
      *
      * @param string $value
+     *
      * @return $this
      */
-    public function setValue($value)
+    public function setValue(string $value): AttachmentField
     {
         $this->value = $value;
 
@@ -99,7 +102,7 @@ class AttachmentField
      *
      * @return bool
      */
-    public function getShort()
+    public function getShort(): bool
     {
         return $this->short;
     }
@@ -109,9 +112,10 @@ class AttachmentField
      * side-by-side with other fields.
      *
      * @param string $value
+     *
      * @return $this
      */
-    public function setShort($value)
+    public function setShort(string $value): AttachmentField
     {
         $this->short = (bool) $value;
 
@@ -121,9 +125,9 @@ class AttachmentField
     /**
      * Get the array representation of this attachment field.
      *
-     * @return array
+     * @return array<string,mixed>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'title' => $this->getTitle(),

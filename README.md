@@ -1,24 +1,22 @@
 # Slack for PHP
 
-[![Build Status](https://travis-ci.org/maknz/slack.svg?branch=master)](https://travis-ci.org/maknz/slack)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maknz/slack/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maknz/slack/?branch=master)
-[![StyleCI](https://styleci.io/repos/19448330/shield)](https://styleci.io/repos/19448330)
+[//]: # ([![Build Status]&#40;https://travis-ci.org/darkmatus/slack.svg?branch=master&#41;]&#40;https://travis-ci.org/darkmatus/slack&#41;)
+[//]: # ([![Scrutinizer Code Quality]&#40;https://scrutinizer-ci.com/g/darkmatus/slack/badges/quality-score.png?b=master&#41;]&#40;https://scrutinizer-ci.com/g/darkmatus/slack/?branch=master&#41;)
+[//]: # ([![StyleCI]&#40;https://styleci.io/repos/19448330/shield&#41;]&#40;https://styleci.io/repos/19448330&#41;)
 
-A simple PHP package for sending messages to [Slack](https://slack.com) with [incoming webhooks](https://my.slack.com/services/new/incoming-webhook), focussed on ease-of-use and elegant syntax. **Note: this package is no longer being actively maintained.**
-
-* Laravel integration: [Slack for Laravel](https://github.com/maknz/slack-laravel)
-* Symfony integration: [NexySlackBundle](https://github.com/nexylan/NexySlackBundle)
+A simple PHP package for sending messages to [Slack](https://slack.com) with [incoming webhooks](https://my.slack.com/services/new/incoming-webhook), focussed on ease-of-use and elegant syntax.
+Based on the no longer maintained `maknz/slack`.
 
 ## Requirements
 
-* PHP 5.5, 5.6, 7.0 or HHVM
+* PHP 8 or greater
 
 ## Installation
 
 You can install the package using the [Composer](https://getcomposer.org/) package manager. You can install it by running this command in your project root:
 
 ```sh
-composer require maknz/slack
+composer require darkmatus/slack
 ```
 
 Then [create an incoming webhook](https://my.slack.com/services/new/incoming-webhook) on your Slack account for the package to use. You'll need the webhook URL to instantiate the client (or for the configuration file if using Laravel).
@@ -29,7 +27,7 @@ Then [create an incoming webhook](https://my.slack.com/services/new/incoming-web
 
 ```php
 // Instantiate without defaults
-$client = new Maknz\Slack\Client('https://hooks.slack.com/...');
+$client = new Darkmatus\Slack\Client('https://hooks.slack.com/...');
 
 // Instantiate with defaults, so all messages created
 // will be sent from 'Cyril' and to the #accounting channel
@@ -37,10 +35,10 @@ $client = new Maknz\Slack\Client('https://hooks.slack.com/...');
 $settings = [
 	'username' => 'Cyril',
 	'channel' => '#accounting',
-	'link_names' => true
+	'linkNames' => true
 ];
 
-$client = new Maknz\Slack\Client('https://hooks.slack.com/...', $settings);
+$client = new Darkmatus\Slack\Client('https://hooks.slack.com/...', $settings);
 ```
 
 #### Settings
@@ -52,11 +50,11 @@ Field | Type | Description
 `channel` | string | The default channel that messages will be sent to
 `username` | string | The default username for your bot
 `icon` | string | The default icon that messages will be sent with, either `:emoji:` or a URL to an image
-`link_names` | bool | Whether names like `@regan` or `#accounting` should be linked in the message (defaults to false)
-`unfurl_links` | bool | Whether Slack should unfurl text-based URLs (defaults to false)
-`unfurl_media` | bool | Whether Slack should unfurl media-based URLs, like tweets or Youtube videos (defaults to true)
-`allow_markdown` | bool | Whether markdown should be parsed in messages, or left as plain text (defaults to true)
-`markdown_in_attachments` | array | Which attachment fields should have markdown parsed (defaults to none)
+`linkNames` | bool | Whether names like `@regan` or `#accounting` should be linked in the message (defaults to false)
+`unfurlLinks` | bool | Whether Slack should unfurl text-based URLs (defaults to false)
+`unfurlMedia` | bool | Whether Slack should unfurl media-based URLs, like tweets or Youtube videos (defaults to true)
+`allowMarkdown` | bool | Whether markdown should be parsed in messages, or left as plain text (defaults to true)
+`markdownInAttachments` | array | Which attachment fields should have markdown parsed (defaults to none)
 
 ### Sending messages
 
@@ -128,9 +126,9 @@ $client->to('#operations')->attach([
 $client->to('@regan')->attach([
 	'fallback' => 'Keep up the great work! I really love how the app works.',
 	'text' => 'Keep up the great work! I really love how the app works.',
-	'author_name' => 'Jane Appleseed',
-	'author_link' => 'https://yourapp.com/feedback/5874601',
-	'author_icon' => 'https://static.pexels.com/photos/61120/pexels-photo-61120-large.jpeg'
+	'authorName' => 'Jane Appleseed',
+	'authorLink' => 'https://yourapp.com/feedback/5874601',
+	'authorIcon' => 'https://static.pexels.com/photos/61120/pexels-photo-61120-large.jpeg'
 ])->send('New user feedback');
 ```
 

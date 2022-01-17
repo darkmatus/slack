@@ -1,6 +1,6 @@
 <?php
 
-namespace Maknz\Slack;
+namespace Darkmatus\Slack;
 
 class ActionConfirmation
 {
@@ -9,33 +9,33 @@ class ActionConfirmation
      *
      * @var string
      */
-    protected $title;
+    private string $title;
 
     /**
      * The required description.
      *
      * @var string
      */
-    protected $text;
+    private string $text;
 
     /**
      * The text label for the OK button.
      *
      * @var string
      */
-    protected $okText;
+    private string $okText;
 
     /**
      * The text label for the Cancel button.
      *
      * @var string
      */
-    protected $dismissText;
+    private string $dismissText;
 
     /**
      * Instantiate a new ActionConfirmation.
      *
-     * @param array $attributes
+     * @param array<string,mixed> $attributes
      * @return void
      */
     public function __construct(array $attributes)
@@ -60,7 +60,7 @@ class ActionConfirmation
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -69,7 +69,7 @@ class ActionConfirmation
      * @param string $title
      * @return ActionConfirmation
      */
-    public function setTitle($title)
+    public function setTitle(string $title): ActionConfirmation
     {
         $this->title = $title;
 
@@ -79,7 +79,7 @@ class ActionConfirmation
     /**
      * @return string
      */
-    public function getText()
+    public function getText(): string
     {
         return $this->text;
     }
@@ -88,7 +88,7 @@ class ActionConfirmation
      * @param string $text
      * @return ActionConfirmation
      */
-    public function setText($text)
+    public function setText(string $text): ActionConfirmation
     {
         $this->text = $text;
 
@@ -98,7 +98,7 @@ class ActionConfirmation
     /**
      * @return string
      */
-    public function getOkText()
+    public function getOkText(): string
     {
         return $this->okText;
     }
@@ -107,7 +107,7 @@ class ActionConfirmation
      * @param string $okText
      * @return ActionConfirmation
      */
-    public function setOkText($okText)
+    public function setOkText(string $okText): ActionConfirmation
     {
         $this->okText = $okText;
 
@@ -117,7 +117,7 @@ class ActionConfirmation
     /**
      * @return string
      */
-    public function getDismissText()
+    public function getDismissText(): string
     {
         return $this->dismissText;
     }
@@ -126,7 +126,7 @@ class ActionConfirmation
      * @param string $dismissText
      * @return ActionConfirmation
      */
-    public function setDismissText($dismissText)
+    public function setDismissText(string $dismissText): ActionConfirmation
     {
         $this->dismissText = $dismissText;
 
@@ -136,9 +136,9 @@ class ActionConfirmation
     /**
      * Get the array representation of this action confirmation.
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return [
             'title' => $this->getTitle(),

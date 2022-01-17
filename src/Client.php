@@ -1,6 +1,6 @@
 <?php
 
-namespace Maknz\Slack;
+namespace Darkmatus\Slack;
 
 use GuzzleHttp\Client as Guzzle;
 use RuntimeException;
@@ -12,28 +12,28 @@ class Client
      *
      * @var string
      */
-    protected $endpoint;
+    private string $endpoint = '';
 
     /**
      * The default channel to send messages to.
      *
      * @var string
      */
-    protected $channel;
+    private string $channel = '';
 
     /**
      * The default username to send messages as.
      *
      * @var string
      */
-    protected $username;
+    private string $username = '';
 
     /**
      * The default icon to send messages with.
      *
      * @var string
      */
-    protected $icon;
+    private string $icon = '';
 
     /**
      * Whether to link names like @regan or leave
@@ -41,21 +41,21 @@ class Client
      *
      * @var bool
      */
-    protected $link_names = false;
+    private bool $linkNames = false;
 
     /**
      * Whether Slack should unfurl text-based URLs.
      *
      * @var bool
      */
-    protected $unfurl_links = false;
+    private bool $unfurlLinks = false;
 
     /**
      * Whether Slack should unfurl media URLs.
      *
      * @var bool
      */
-    protected $unfurl_media = true;
+    private bool $unfurlMedia = true;
 
     /**
      * Whether message text should be formatted with Slack's
@@ -63,7 +63,7 @@ class Client
      *
      * @var bool
      */
-    protected $allow_markdown = true;
+    private bool $allowMarkdown = true;
 
     /**
      * The attachment fields which should be formatted with
@@ -71,23 +71,24 @@ class Client
      *
      * @var array
      */
-    protected $markdown_in_attachments = [];
+    private array $markdownInAttachments = [];
 
     /**
      * The Guzzle HTTP client instance.
      *
-     * @var \GuzzleHttp\Client
+     * @var Guzzle
      */
-    protected $guzzle;
+    private Guzzle $guzzle;
 
     /**
      * Instantiate a new Client.
      *
-     * @param string $endpoint
-     * @param array $attributes
+     * @param string                   $endpoint
+     * @param array<int|string, mixed> $attributes
+     *
      * @return void
      */
-    public function __construct($endpoint, array $attributes = [], Guzzle $guzzle = null)
+    public function __construct(string $endpoint, array $attributes = [], Guzzle $guzzle = null)
     {
         $this->endpoint = $endpoint;
 
@@ -103,38 +104,39 @@ class Client
             $this->setDefaultIcon($attributes['icon']);
         }
 
-        if (isset($attributes['link_names'])) {
-            $this->setLinkNames($attributes['link_names']);
+        if (isset($attributes['linkNames'])) {
+            $this->setLinkNames($attributes['linkNames']);
         }
 
-        if (isset($attributes['unfurl_links'])) {
-            $this->setUnfurlLinks($attributes['unfurl_links']);
+        if (isset($attributes['unfurlLinks'])) {
+            $this->setUnfurlLinks($attributes['unfurlLinks']);
         }
 
-        if (isset($attributes['unfurl_media'])) {
-            $this->setUnfurlMedia($attributes['unfurl_media']);
+        if (isset($attributes['unfurlMedia'])) {
+            $this->setUnfurlMedia($attributes['unfurlMedia']);
         }
 
-        if (isset($attributes['allow_markdown'])) {
-            $this->setAllowMarkdown($attributes['allow_markdown']);
+        if (isset($attributes['allowMarkdown'])) {
+            $this->setAllowMarkdown($attributes['allowMarkdown']);
         }
 
-        if (isset($attributes['markdown_in_attachments'])) {
-            $this->setMarkdownInAttachments($attributes['markdown_in_attachments']);
+        if (isset($attributes['markdownInAttachments'])) {
+            $this->setMarkdownInAttachments($attributes['markdownInAttachments']);
         }
 
-        $this->guzzle = $guzzle ?: new Guzzle;
+        $this->guzzle = $guzzle ?: new Guzzle(['base_uri' => $endpoint]);
     }
 
     /**
      * Pass any unhandled methods through to a new Message
      * instance.
      *
-     * @param string $name The name of the method
-     * @param array $arguments The method arguments
-     * @return \Maknz\Slack\Message
+     * @param string                   $name      The name of the method
+     * @param array<int|string, mixed> $arguments The method arguments
+     *
+     * @return \Darkmatus\Slack\Message
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): Message
     {
         return call_user_func_array([$this->createMessage(), $name], $arguments);
     }
@@ -144,7 +146,7 @@ class Client
      *
      * @return string
      */
-    public function getEndpoint()
+    public function getEndpoint(): string
     {
         return $this->endpoint;
     }
@@ -153,9 +155,10 @@ class Client
      * Set the Slack endpoint.
      *
      * @param string $endpoint
+     *
      * @return void
      */
-    public function setEndpoint($endpoint)
+    public function setEndpoint(string $endpoint): void
     {
         $this->endpoint = $endpoint;
     }
@@ -165,7 +168,7 @@ class Client
      *
      * @return string
      */
-    public function getDefaultChannel()
+    public function getDefaultChannel(): string
     {
         return $this->channel;
     }
@@ -174,9 +177,10 @@ class Client
      * Set the default channel messages will be created for.
      *
      * @param string $channel
+     *
      * @return void
      */
-    public function setDefaultChannel($channel)
+    public function setDefaultChannel(string $channel): void
     {
         $this->channel = $channel;
     }
@@ -186,7 +190,7 @@ class Client
      *
      * @return string
      */
-    public function getDefaultUsername()
+    public function getDefaultUsername(): string
     {
         return $this->username;
     }
@@ -195,9 +199,10 @@ class Client
      * Set the default username messages will be created for.
      *
      * @param string $username
+     *
      * @return void
      */
-    public function setDefaultUsername($username)
+    public function setDefaultUsername(string $username): void
     {
         $this->username = $username;
     }
@@ -207,7 +212,7 @@ class Client
      *
      * @return string
      */
-    public function getDefaultIcon()
+    public function getDefaultIcon(): string
     {
         return $this->icon;
     }
@@ -216,9 +221,10 @@ class Client
      * Set the default icon messages will be created with.
      *
      * @param string $icon
+     *
      * @return void
      */
-    public function setDefaultIcon($icon)
+    public function setDefaultIcon(string $icon): void
     {
         $this->icon = $icon;
     }
@@ -229,9 +235,9 @@ class Client
      *
      * @return bool
      */
-    public function getLinkNames()
+    public function getLinkNames(): bool
     {
-        return $this->link_names;
+        return $this->linkNames;
     }
 
     /**
@@ -239,11 +245,12 @@ class Client
      * will be converted into links.
      *
      * @param bool $value
+     *
      * @return void
      */
-    public function setLinkNames($value)
+    public function setLinkNames(bool $value)
     {
-        $this->link_names = (bool) $value;
+        $this->linkNames = (bool) $value;
     }
 
     /**
@@ -251,20 +258,21 @@ class Client
      *
      * @return bool
      */
-    public function getUnfurlLinks()
+    public function getUnfurlLinks(): bool
     {
-        return $this->unfurl_links;
+        return $this->unfurlLinks;
     }
 
     /**
      * Set whether text links should be unfurled.
      *
      * @param bool $value
+     *
      * @return void
      */
-    public function setUnfurlLinks($value)
+    public function setUnfurlLinks(bool $value): void
     {
-        $this->unfurl_links = (bool) $value;
+        $this->unfurlLinks = (bool) $value;
     }
 
     /**
@@ -272,20 +280,21 @@ class Client
      *
      * @return bool
      */
-    public function getUnfurlMedia()
+    public function getUnfurlMedia(): bool
     {
-        return $this->unfurl_media;
+        return $this->unfurlMedia;
     }
 
     /**
      * Set whether media links should be unfurled.
      *
      * @param bool $value
+     *
      * @return void
      */
-    public function setUnfurlMedia($value)
+    public function setUnfurlMedia(bool $value): void
     {
-        $this->unfurl_media = (bool) $value;
+        $this->unfurlMedia = (bool) $value;
     }
 
     /**
@@ -296,7 +305,7 @@ class Client
      */
     public function getAllowMarkdown()
     {
-        return $this->allow_markdown;
+        return $this->allowMarkdown;
     }
 
     /**
@@ -304,11 +313,12 @@ class Client
      * Slack's Markdown-like language.
      *
      * @param bool $value
+     *
      * @return void
      */
-    public function setAllowMarkdown($value)
+    public function setAllowMarkdown(bool $value)
     {
-        $this->allow_markdown = (bool) $value;
+        $this->allowMarkdown = (bool) $value;
     }
 
     /**
@@ -317,9 +327,9 @@ class Client
      *
      * @return array
      */
-    public function getMarkdownInAttachments()
+    public function getMarkdownInAttachments(): array
     {
-        return $this->markdown_in_attachments;
+        return $this->markdownInAttachments;
     }
 
     /**
@@ -327,42 +337,38 @@ class Client
      * in Slack's Markdown-like language.
      *
      * @param array $fields
+     *
      * @return void
      */
     public function setMarkdownInAttachments(array $fields)
     {
-        $this->markdown_in_attachments = $fields;
+        $this->markdownInAttachments = $fields;
     }
 
     /**
      * Create a new message with defaults.
      *
-     * @return \Maknz\Slack\Message
+     * @return \Darkmatus\Slack\Message
      */
     public function createMessage()
     {
         $message = new Message($this);
-
         $message->setChannel($this->getDefaultChannel());
-
         $message->setUsername($this->getDefaultUsername());
-
         $message->setIcon($this->getDefaultIcon());
-
         $message->setAllowMarkdown($this->getAllowMarkdown());
-
         $message->setMarkdownInAttachments($this->getMarkdownInAttachments());
 
         return $message;
     }
 
-    /**
-     * Send a message.
+    /**     * Send a message.
      *
-     * @param \Maknz\Slack\Message $message
+     * @param \Darkmatus\Slack\Message $message
+     *
      * @return void
      */
-    public function sendMessage(Message $message)
+    public function sendMessage(Message $message): void
     {
         $payload = $this->preparePayload($message);
 
@@ -378,19 +384,20 @@ class Client
     /**
      * Prepares the payload to be sent to the webhook.
      *
-     * @param \Maknz\Slack\Message $message The message to send
-     * @return array
+     * @param \Darkmatus\Slack\Message $message The message to send
+     *
+     * @return array<string, mixed>
      */
-    public function preparePayload(Message $message)
+    public function preparePayload(Message $message): array
     {
         $payload = [
-            'text' => $message->getText(),
-            'channel' => $message->getChannel(),
-            'username' => $message->getUsername(),
-            'link_names' => $this->getLinkNames() ? 1 : 0,
+            'text'         => $message->getText(),
+            'channel'      => $message->getChannel(),
+            'username'     => $message->getUsername(),
+            'link_names'   => $this->getLinkNames() ? 1 : 0,
             'unfurl_links' => $this->getUnfurlLinks(),
             'unfurl_media' => $this->getUnfurlMedia(),
-            'mrkdwn' => $message->getAllowMarkdown(),
+            'mrkdwn'       => $message->getAllowMarkdown(),
         ];
 
         if ($icon = $message->getIcon()) {
@@ -405,10 +412,11 @@ class Client
     /**
      * Get the attachments in array form.
      *
-     * @param \Maknz\Slack\Message $message
-     * @return array
+     * @param \Darkmatus\Slack\Message $message
+     *
+     * @return array<
      */
-    protected function getAttachmentsAsArrays(Message $message)
+    private function getAttachmentsAsArrays(Message $message): array
     {
         $attachments = [];
 
